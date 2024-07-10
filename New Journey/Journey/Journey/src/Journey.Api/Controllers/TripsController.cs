@@ -1,4 +1,5 @@
-﻿using Journey.Application.UseCases.Trips.Register;
+﻿using Journey.Application.UseCases.Trips.GetAll;
+using Journey.Application.UseCases.Trips.Register;
 using Journey.Communication.Requests;
 using Journey.Exception.ExceptionsBase;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +39,11 @@ namespace Journey.Api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
+            var UseCase = new GetAllTripsUseCase();
 
+            var result = UseCase.Execute();
+
+            return Ok(result);
         }
     }
 }
