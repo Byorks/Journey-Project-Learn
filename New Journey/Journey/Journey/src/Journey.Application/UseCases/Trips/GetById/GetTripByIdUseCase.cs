@@ -22,7 +22,8 @@ namespace Journey.Application.UseCases.Trips.GetById
             if (trip is null)
             {   
                 // Se entrar com ID inválido, ele sera enviado essa exceção
-                throw new JourneyException(ResourceErrorMessages.TRIP_NOT_FOUND);
+                // Foi alterado para NotFoundException para eu direcionar corretamnete as exceções
+                throw new NotFoundException(ResourceErrorMessages.TRIP_NOT_FOUND);
             }
 
             return new ResponseTripJson

@@ -40,18 +40,18 @@ namespace Journey.Application.UseCases.Trips.Register
         {
             if (string.IsNullOrWhiteSpace(request.Name)) // Retorna Bool
             {
-                throw new JourneyException(ResourceErrorMessages.NAM_EMPTY);
+                throw new ErrorOnValidationException(ResourceErrorMessages.NAM_EMPTY);
             }
 
             // Para delimitar que apenas preciso da Data e não da hora, padrão : Data e Hora | UtcNow.Date o .Date é necessário
             if (request.StartDate.Date < DateTime.UtcNow.Date) // Now - usa a hora do pc | UtcNow - Usa a hora base mundial, o BR está a -4h/-3h
             {
-                throw new JourneyException(ResourceErrorMessages.DATE_TRIP_MUST_BE_LATER_THAN_TODAY);
+                throw new ErrorOnValidationException(ResourceErrorMessages.DATE_TRIP_MUST_BE_LATER_THAN_TODAY);
             }
 
             if (request.EndDate.Date < request.StartDate.Date)
             {
-                throw new JourneyException(ResourceErrorMessages.END_DATE_TRIP_MUST_BE_LATER_START_DATE);
+                throw new ErrorOnValidationException(ResourceErrorMessages.END_DATE_TRIP_MUST_BE_LATER_START_DATE);
             }
         }
     }
