@@ -1,6 +1,8 @@
 ﻿using Journey.Application.UseCases.Trips.GetAll;
+using Journey.Application.UseCases.Trips.GetById;
 using Journey.Application.UseCases.Trips.Register;
 using Journey.Communication.Requests;
+using Journey.Communication.Responses;
 using Journey.Exception.ExceptionsBase;
 using Microsoft.AspNetCore.Mvc;
 // Ctrl + R + G -> Coloca os using em ordem alfabética e remove os não utilizados
@@ -13,7 +15,9 @@ namespace Journey.Api.Controllers
         //EndPoint é uma função especial, precisa do nome [HttpPost]
         // FromBody serve para direcionar onde será lido os dados que vão ser transformados em atributos
         [HttpPost]
-        public IActionResult Register([FromBody] RequestRegisterTripJson request) 
+        [ProducesResponseType(typeof(ResponseShortTripJson), StatusCodes.Status201Created)] // Exemplos de boa documentação dando exemplos de resposta
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public IActionResult Register([FromBody] RequestRegisterTripJson request)
         {
             try
             {
@@ -37,6 +41,8 @@ namespace Journey.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(ResponseTripsJson), StatusCodes.Status200OK)]
+
         public IActionResult GetAll()
         {
             var UseCase = new GetAllTripsUseCase();
@@ -44,6 +50,31 @@ namespace Journey.Api.Controllers
             var result = UseCase.Execute();
 
             return Ok(result);
+        }
+
+        //[HttpGet("by-id")] // Precisa de um endereço diferente quando a mais do mesmo método sendo executado
+        [HttpGet]
+        [Route("{id}")]
+        [ProducesResponseType(typeof(ResponseTripJson), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public IActionResult GetById([FromRoute] Guid id)
+        {
+            try
+            {
+                var useCase = new GetTripByIdUseCase();
+
+                var response = useCase.Execute(id);
+
+                return Ok(response);
+            }
+            catch (JourneyException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro desconhecido");
+            }
         }
     }
 }
