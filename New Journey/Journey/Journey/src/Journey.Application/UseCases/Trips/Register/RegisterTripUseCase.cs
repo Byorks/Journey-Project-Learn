@@ -36,23 +36,41 @@ namespace Journey.Application.UseCases.Trips.Register
             };
         }
 
+        #region Método Validate Refatorado
+        // Foi refatorado para RegisterTripValidator
         private void Validate(RequestRegisterTripJson request)
         {
-            if (string.IsNullOrWhiteSpace(request.Name)) // Retorna Bool
-            {
-                throw new ErrorOnValidationException(ResourceErrorMessages.NAM_EMPTY);
+            var validator = new RegisterTripValidator();
+
+            var result = validator.Validate(request);
+
+            if (result.IsValid == false)
+            {   
+                // Percorrendo cada item de validator e selecionando as mensagens
+                var errorMessages = result.Errors.Select(error => error.ErrorMessage).ToList();
+                
+                throw new ErrorOnValidationException(errorMessages);
             }
 
-            // Para delimitar que apenas preciso da Data e não da hora, padrão : Data e Hora | UtcNow.Date o .Date é necessário
-            if (request.StartDate.Date < DateTime.UtcNow.Date) // Now - usa a hora do pc | UtcNow - Usa a hora base mundial, o BR está a -4h/-3h
-            {
-                throw new ErrorOnValidationException(ResourceErrorMessages.DATE_TRIP_MUST_BE_LATER_THAN_TODAY);
-            }
+            #region Ifs que foram retirados
+            //if (string.IsNullOrWhiteSpace(request.Name)) // Retorna Bool
+            //{
+            //    throw new ErrorOnValidationException(ResourceErrorMessages.NAM_EMPTY);
+            //}
 
-            if (request.EndDate.Date < request.StartDate.Date)
-            {
-                throw new ErrorOnValidationException(ResourceErrorMessages.END_DATE_TRIP_MUST_BE_LATER_START_DATE);
-            }
+            //// Para delimitar que apenas preciso da Data e não da hora, padrão : Data e Hora | UtcNow.Date o .Date é necessário
+            //if (request.StartDate.Date < DateTime.UtcNow.Date) // Now - usa a hora do pc | UtcNow - Usa a hora base mundial, o BR está a -4h/-3h
+            //{
+            //    throw new ErrorOnValidationException(ResourceErrorMessages.DATE_TRIP_MUST_BE_LATER_THAN_TODAY);
+            //}
+
+            //if (request.EndDate.Date < request.StartDate.Date)
+            //{
+            //    throw new ErrorOnValidationException(ResourceErrorMessages.END_DATE_TRIP_MUST_BE_LATER_START_DATE);
+            //}
+            #endregion
         }
+        #endregion
+
     }
 }

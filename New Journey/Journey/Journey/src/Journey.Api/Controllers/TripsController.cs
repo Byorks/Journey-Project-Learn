@@ -1,9 +1,9 @@
-﻿using Journey.Application.UseCases.Trips.GetAll;
+﻿using Journey.Application.UseCases.Trips.Delete;
+using Journey.Application.UseCases.Trips.GetAll;
 using Journey.Application.UseCases.Trips.GetById;
 using Journey.Application.UseCases.Trips.Register;
 using Journey.Communication.Requests;
 using Journey.Communication.Responses;
-using Journey.Exception.ExceptionsBase;
 using Microsoft.AspNetCore.Mvc;
 // Ctrl + R + G -> Coloca os using em ordem alfabética e remove os não utilizados
 namespace Journey.Api.Controllers
@@ -19,25 +19,26 @@ namespace Journey.Api.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult Register([FromBody] RequestRegisterTripJson request)
         {
-            try
-            {
-                // Verificação se tudo da request está de acordo
-                // var é somente uma forma simplificada de dizer o tipo de RegisterTripUseCase
-                var useCase = new RegisterTripUseCase();
+            // Verificação se tudo da request está de acordo
+            // var é somente uma forma simplificada de dizer o tipo de RegisterTripUseCase
+            var useCase = new RegisterTripUseCase();
 
-                var response = useCase.Execute(request);
+            var response = useCase.Execute(request);
 
-                return Created(string.Empty, response); // Devolvendo resposta status code 201
-            }
-            catch (JourneyException ex) // Apenas as excessões do Journey entrarão nesse catch
-            {
-                return BadRequest(ex.Message);
-            }
+            return Created(string.Empty, response); // Devolvendo resposta status code 201
 
-            catch // Se for qualquer outra exceção, quando ainda não foi tratado
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Erro desconhecido");
-            }
+            #region Try Catch Retirado
+            // ---- Essa parte não é mais necessária por conta da implementação do Filter  ----
+            //catch (JourneyException ex) // Apenas as excessões do Journey entrarão nesse catch
+            //{
+            //    return BadRequest(ex.Message);
+            //}
+
+            //catch // Se for qualquer outra exceção, quando ainda não foi tratado
+            //{
+            //    return StatusCode(StatusCodes.Status500InternalServerError, "Erro desconhecido");
+            //}
+            #endregion
         }
 
         [HttpGet]
@@ -59,22 +60,24 @@ namespace Journey.Api.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetById([FromRoute] Guid id)
         {
-            try
-            {
-                var useCase = new GetTripByIdUseCase();
+            var useCase = new GetTripByIdUseCase();
 
-                var response = useCase.Execute(id);
+            var response = useCase.Execute(id);
 
-                return Ok(response);
-            }
-            catch (JourneyException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Erro desconhecido");
-            }
+            return Ok(response);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public IActionResult DeleteById([FromRoute] Guid id)
+        {
+            var useCase = new DeleteTripByIdUseCase();
+
+            useCase.Execute(id);
+
+            return NoContent();
         }
     }
 }

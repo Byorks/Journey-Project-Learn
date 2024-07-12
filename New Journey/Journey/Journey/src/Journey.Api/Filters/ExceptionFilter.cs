@@ -1,4 +1,5 @@
-﻿using Journey.Exception.ExceptionsBase;
+﻿using Journey.Communication.Responses;
+using Journey.Exception.ExceptionsBase;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -8,15 +9,28 @@ namespace Journey.Api.Filters
     {
         public void OnException(ExceptionContext context)
         {
-            if(context.Exception is NotFoundException)
-            {
-                context.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-                context.Result = new NotFoundObjectResult(context.Exception.Message);
+            if(context.Exception is JourneyException)
+            {   
+                var journeyException = (JourneyException)context.Exception;
+
+                context.HttpContext.Response.StatusCode = (int)journeyException.GetStatusCode();
+
+                var responseJson = new ResponseErrorsJson(journeyException.GetErrorMessages());
+
+                context.Result = new ObjectResult(responseJson);
             }
-            else if (context.Exception is ErrorOnValidationException)
+            else
             {
-                context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Result = new BadRequestObjectResult(context.Exception.Message);
+                context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+                var list = new List<string>
+                {
+                    "Erro Desconhecido"
+                };
+
+                var responseJson = new ResponseErrorsJson(list);
+
+                context.Result = new ObjectResult(responseJson);
             }
         }
     }
