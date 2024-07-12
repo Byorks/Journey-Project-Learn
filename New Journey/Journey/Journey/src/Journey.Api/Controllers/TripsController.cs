@@ -113,5 +113,19 @@ namespace Journey.Api.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete]
+        [Route("{tripId}/activity/{acticityId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResponseErrorsJson), StatusCodes.Status404NotFound)]
+        public IActionResult DeleteActivity(
+            [FromRoute] Guid tripId,
+            [FromRoute] Guid activityId)
+        {
+            var useCase = new DeleteActivityForTripUseCase();
+
+            useCase.Execute(tripId, activityId);
+            return NoContent();
+        }
     }
 }
