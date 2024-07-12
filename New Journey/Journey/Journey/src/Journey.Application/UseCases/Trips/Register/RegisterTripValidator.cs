@@ -10,7 +10,7 @@ namespace Journey.Application.UseCases.Trips.Register
         public RegisterTripValidator()
         {
             // Criando uma regra para request.Name
-            RuleFor(request => request.Name).NotEmpty().WithMessage(ResourceErrorMessages.NAM_EMPTY);
+            RuleFor(request => request.Name).NotEmpty().WithMessage(ResourceErrorMessages.NAME_EMPTY);
 
             RuleFor(request => request.StartDate.Date)
                 .GreaterThanOrEqualTo(DateTime.UtcNow.Date)
