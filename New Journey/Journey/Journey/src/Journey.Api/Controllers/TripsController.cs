@@ -1,4 +1,5 @@
 ﻿using Journey.Application.UseCases.Activities.Complete;
+using Journey.Application.UseCases.Activities.Delete;
 using Journey.Application.UseCases.Activities.Register;
 using Journey.Application.UseCases.Trips.Delete;
 using Journey.Application.UseCases.Trips.GetAll;
@@ -7,6 +8,7 @@ using Journey.Application.UseCases.Trips.Register;
 using Journey.Communication.Requests;
 using Journey.Communication.Responses;
 using Microsoft.AspNetCore.Mvc;
+
 // Ctrl + R + G -> Coloca os using em ordem alfabética e remove os não utilizados
 namespace Journey.Api.Controllers
 {

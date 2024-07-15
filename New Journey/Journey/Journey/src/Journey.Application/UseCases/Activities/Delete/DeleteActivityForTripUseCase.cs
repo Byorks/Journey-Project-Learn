@@ -11,7 +11,7 @@ namespace Journey.Application.UseCases.Activities.Delete
 {
     public class DeleteActivityForTripUseCase
     {
-        public void Excute(Guid tripId, Guid activityId)
+        public void Execute(Guid tripId, Guid activityId)
         {
             var dbContext = new JourneyDbContext();
 
