@@ -1,3 +1,9 @@
+const formatador = (data) => {
+    console.log(dayjs(data).format('hh:mm'));
+}
+
+formatador(new Date('2024-04-01'));
+
 /* Coletando Dados */
 /* Object {} */
 const atividade = {
@@ -8,7 +14,7 @@ const atividade = {
 }
 
 /* Lista/Array/Vetor */
-const atividades = [
+let atividades = [
     /* o objeto atividade foi adicionado a atividades [0]*/
     atividade,
     {
@@ -23,6 +29,7 @@ const atividades = [
     }
 ]
 
+atividades = [];
 /* Processando Dados */
 /* Arrow function */
 const criarItemDeAtividade = (atividade) => {
@@ -51,9 +58,20 @@ const criarItemDeAtividade = (atividade) => {
 /* Se eu quiser retirar o código do HTML, já posso, porque o JS está colocando de modo dinámico */
 
 /* Selecionado as sections do hmtl e alterando*/
-const section = document.querySelector('section');
 
-for(let atividade of atividades)
-{
-    section.innerHTML += criarItemDeAtividade(atividade);
+
+const atualizarListaDeAtividades = () => {
+    const section = document.querySelector('section');
+
+    if(atividades.length == 0){
+        section.innerHTML = `<p>Nenhuma atividade cadastrada.</p>`
+        return
+    }
+    for(let atividade of atividades)
+    {
+        section.innerHTML += criarItemDeAtividade(atividade);
+    }
+    
 }
+
+atualizarListaDeAtividades();
