@@ -29,7 +29,9 @@ let atividades = [
     }
 ]
 
+// Limpando lista
 atividades = [];
+
 /* Processando Dados */
 /* Arrow function */
 const criarItemDeAtividade = (atividade) => {
@@ -55,15 +57,14 @@ const criarItemDeAtividade = (atividade) => {
         </div>
     `
 }
+
 /* Se eu quiser retirar o código do HTML, já posso, porque o JS está colocando de modo dinámico */
 
 /* Selecionado as sections do hmtl e alterando*/
-
-
 const atualizarListaDeAtividades = () => {
     const section = document.querySelector('section');
 
-    if(atividades.length == 0){
+    if(atividades.length == 0){ // Se o comprimento da lista ativivdade for 0, portanto, sem objetos!
         section.innerHTML = `<p>Nenhuma atividade cadastrada.</p>`
         return
     }
@@ -71,7 +72,7 @@ const atualizarListaDeAtividades = () => {
     {
         section.innerHTML += criarItemDeAtividade(atividade);
     }
-    
 }
 
+// Executa o método
 atualizarListaDeAtividades();
