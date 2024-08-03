@@ -65,6 +65,7 @@ input, select, button {
 }
 
 input, select {
+    /* Retira todos inputs */
     all: unset;
 }
 
@@ -97,3 +98,62 @@ border-radius: 12px;
 }
 
 /* Main*/
+main {
+    margin-top: 32px; 
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 24px;
+    text-align: center;
+
+    margin-bottom: 24px;
+}
+
+section {
+    display: grid;
+    gap: 10px;
+}
+
+section input[type="checkbox"] {
+    border: ;
+
+    position: absolute;
+    /* Preenche toda a box do elemento */
+    inset: 0;
+}
+
+section .card-bg {
+    position: relative;
+    padding: 10px 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+section .card-bg:has(:checked) .active,
+section .card-bg .inactive{
+    display: block;
+}
+
+section .card-bg:has(:checked) .inactive,
+section .card-bg .active{
+    display: none;
+}
+
+/* Selecionando a primeira div de divs*/
+section .card-bg > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+time {
+    font-size: 14px;
+    color: #A1A1AB;
+}
+
+.full {
+    display: none;
+}
