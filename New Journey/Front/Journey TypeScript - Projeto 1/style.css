@@ -61,7 +61,7 @@ input, select, button {
 /* Deixa o campo com as propriedades a seguir quando estivermos selecionando os campos*/
 .field-wrapper:focus-within {
     /* É bom por questão de acessibilidade*/
-    outline: 2px solid red;
+    outline: 2px solid yellowgreen;
 }
 
 input, select {
@@ -116,9 +116,8 @@ section {
 }
 
 section input[type="checkbox"] {
-    border: ;
-
     position: absolute;
+    /* Criado para quando clicarmos fora da caixinha ele ativar o checkbox */
     /* Preenche toda a box do elemento */
     inset: 0;
 }
@@ -142,6 +141,13 @@ section .card-bg .active{
     display: none;
 }
 
+/* Pegando o primeiro nível de div */
+section .card-bg > div {
+    display: flex;
+    align-items: center;
+    gap:12px;
+}
+
 /* Selecionando a primeira div de divs*/
 section .card-bg > div {
     display: flex;
@@ -152,8 +158,47 @@ section .card-bg > div {
 time {
     font-size: 14px;
     color: #A1A1AB;
+    text-align: right;
 }
 
-.full {
+ time.full{
     display: none;
+}
+
+@media (width > 1024px){
+    #app{
+        display: flex;
+        max-width: 960px;
+        gap: 32px;
+    }
+    
+    main {
+        margin-top: 0;
+        flex: 1;
+    }
+
+    h1 {
+        text-align: left;
+    }
+
+    time.full{
+        display: block;
+    }
+    
+    time.short{
+        display: none;
+    }
+}
+
+section .card-bg {
+    animation: appear 300ms;
+}
+
+/* Criando animação para aparecer suavemente
+    Nomeou de appear
+*/
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
 }
